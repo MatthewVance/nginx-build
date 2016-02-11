@@ -87,7 +87,6 @@ mkdir -p $BPATH/nginx
 --with-http_realip_module \
 --with-http_addition_module \
 --with-http_sub_module \
---with-http_dav_module \
 --with-http_mp4_module \
 --with-http_gunzip_module \
 --with-http_gzip_static_module \
