@@ -31,8 +31,7 @@ mkdir build
 apt-get update && apt-get -y install \
   build-essential \
   curl \
-  libssl-dev \
-  libxslt1-dev
+  libssl-dev
 
 # grab the source files
 curl -L $SOURCE_PCRE$VERSION_PCRE.tar.gz -o ./build/PCRE.tar.gz && \
@@ -103,7 +102,6 @@ mkdir -p $BPATH/nginx
 --with-stream \
 --with-stream_ssl_module \
 --with-http_slice_module \
---with-http_xslt_module \
 && make && make install
 
 # rename the compiled 'default' /etc/nginx directory so its accessible as a reference to the new nginx defaults
