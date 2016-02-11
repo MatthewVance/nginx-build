@@ -7,7 +7,7 @@ set -e -x
 # names of latest versions of each package
 export VERSION_PCRE=pcre-8.38
 export VERSION_OPENSSL=openssl-1.0.2f
-export VERSION_NGINX=nginx-1.9.10
+export VERSION_NGINX=nginx-1.9.11
 
 # checksums of latest versions of each package
 export SHA256_PCRE=9883e419c336c63b0cb5202b09537c140966d585e4d0da66147dc513da13e629
