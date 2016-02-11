@@ -12,7 +12,7 @@ export VERSION_NGINX=nginx-1.9.10
 # checksums of latest versions of each package
 export SHA256_PCRE=9883e419c336c63b0cb5202b09537c140966d585e4d0da66147dc513da13e629
 export SHA256_OPENSSL=932b4ee4def2b434f85435d9e3e19ca8ba99ce9a065a61524b429a9d5e9b2e9c
-export SHA256_NGINX=fb14d76844cab0a5a0880768be28965e74f9956790f618c454ef6098e26631d9
+export SHA256_NGINX=6a5c72f4afaf57a6db064bba0965d72335f127481c5d4e64ee8714e7b368a51f
 
 # URLs to the source directories
 export SOURCE_OPENSSL=https://www.openssl.org/source/
