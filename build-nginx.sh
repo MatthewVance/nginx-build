@@ -84,7 +84,6 @@ mkdir -p $BPATH/nginx
 --http-scgi-temp-path=/var/cache/nginx/scgi_temp \
 --with-http_ssl_module \
 --with-http_realip_module \
---with-http_addition_module \
 --with-http_sub_module \
 --with-http_mp4_module \
 --with-http_gunzip_module \
