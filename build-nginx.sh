@@ -70,6 +70,7 @@ cd $BPATH/$VERSION_NGINX
 mkdir -p $BPATH/nginx
 ./configure --with-cc-opt="-I $STATICLIBSSL/include -I/usr/include" \
 --with-ld-opt="-L $STATICLIBSSL/lib -Wl,-rpath -lssl -lcrypto -ldl -lz" \
+--with-openssl=$BPATH/$VERSION_OPENSSL \
 --with-pcre=$BPATH/$VERSION_PCRE \
 --sbin-path=/usr/sbin/nginx \
 --conf-path=/etc/nginx/nginx.conf \
