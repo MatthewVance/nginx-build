@@ -7,12 +7,12 @@ set -e -x
 # names of latest versions of each package
 export VERSION_PCRE=pcre-8.38
 export VERSION_OPENSSL=openssl-1.0.2g
-export VERSION_NGINX=nginx-1.9.12
+export VERSION_NGINX=nginx-1.9.13
 
 # checksums of latest versions of each package
 export SHA256_PCRE=9883e419c336c63b0cb5202b09537c140966d585e4d0da66147dc513da13e629
 export SHA256_OPENSSL=b784b1b3907ce39abf4098702dade6365522a253ad1552e267a9a0e89594aa33
-export SHA256_NGINX=1af2eb956910ed4b11aaf525a81bc37e135907e7127948f9179f5410337da042
+export SHA256_NGINX=f7cd529a5879cd9cd5b62e6fc4a3a7e8d8363cb12c080ab480cc718c55736609
 
 # URLs to the source directories
 export SOURCE_OPENSSL=https://www.openssl.org/source/
