@@ -1,43 +1,44 @@
 #!/usr/bin/env bash
+# Run as root or with sudo
 
-# make script exit if a simple command fails and
-# make script print commands being executed
+# Make script exit if a simple command fails and
+# Make script print commands being executed
 set -e -x
 
-# names of latest versions of each package
+# Set names of latest versions of each package
 export VERSION_PCRE=pcre-8.38
 export VERSION_OPENSSL=openssl-1.0.2h
 export VERSION_NGINX=nginx-1.11.2
 
-# checksums of latest versions of each package
+# Set checksums of latest versions
 export SHA256_PCRE=9883e419c336c63b0cb5202b09537c140966d585e4d0da66147dc513da13e629
 export SHA256_OPENSSL=1d4007e53aad94a5b2002fe045ee7bb0b3d98f1a47f8b2bc851dcd1c74332919
 export SHA256_NGINX=a0327be3e647bdc4a1b3ef98946a8e8fbf258ce8da6bed9a94222b249ae2700a
 
-# GPG keys
+# Set GPG keys used to sign downloads
 export GPG_OPENSSL=8657ABB260F056B1E5190839D9C4D26D0E604491
 export GPG_NGINX=B0F4253373F8F6F510D42178520A9993A1C052F8
 
-# URLs to the source directories
+# Set URLs to the source directories
 export SOURCE_OPENSSL=https://www.openssl.org/source/
 export SOURCE_PCRE=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/
 export SOURCE_NGINX=http://nginx.org/download/
 
-# make a 'today' variable for use in back-up filenames later
+# Make a 'today' variable for use in back-up filenames later
 today=$(date +"%Y-%m-%d")
 
-# clean out any files from previous runs of this script
+# Clean out any files from previous runs of this script
 rm -rf build
 rm -rf /etc/nginx-default
 mkdir build
 
-# ensure that we have the required software to compile our own nginx
+# Ensure the required software to compile nginx is installed
 apt-get update && apt-get -y install \
   build-essential \
   curl \
   libssl-dev
 
-# grab the source files
+# Download the source files
 curl -L $SOURCE_PCRE$VERSION_PCRE.tar.gz -o ./build/PCRE.tar.gz && \
   echo "${SHA256_PCRE} ./build/PCRE.tar.gz" | sha256sum -c -
 curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz -o ./build/OPENSSL.tar.gz && \
@@ -45,11 +46,11 @@ curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz -o ./build/OPENSSL.tar.gz && \
 curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz -o ./build/NGINX.tar.gz && \
   echo "${SHA256_NGINX} ./build/NGINX.tar.gz" | sha256sum -c -
 
-# grab the signature files
+# Download the signature files
 curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz.asc -o ./build/OPENSSL.tar.gz.asc
 curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz.asc -o ./build/NGINX.tar.gz.asc
 
-# check GPG signature
+# Verify GPG signature of downloads
 cd build
 export GNUPGHOME="$(mktemp -d)"
 gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_OPENSSL"
@@ -58,17 +59,17 @@ gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_NGINX"
 gpg --batch --verify NGINX.tar.gz.asc NGINX.tar.gz
 rm -r "$GNUPGHOME" OPENSSL.tar.gz.asc NGINX.tar.gz.asc
 
-# expand the source files
+# Expand the source files
 tar xzf PCRE.tar.gz
 tar xzf OPENSSL.tar.gz
 tar xzf NGINX.tar.gz
 cd ../
 
-# set where OpenSSL and nginx will be built
+# Set where OpenSSL and nginx will be built
 export BPATH=$(pwd)/build
 export STATICLIBSSL="$BPATH/staticlibssl"
 
-# build static openssl
+# Build static OpenSSL
 cd $BPATH/$VERSION_OPENSSL
 rm -rf "$STATICLIBSSL"
 mkdir "$STATICLIBSSL"
@@ -78,10 +79,10 @@ make clean
 && make \
 && make install_sw
 
-# rename the existing /etc/nginx directory so it's saved as a back-up
+# Rename the existing /etc/nginx directory so it's saved as a back-up
 mv /etc/nginx /etc/nginx-$today
 
-# build nginx, with various modules included/excluded
+# Build nginx, with various modules included/excluded
 cd $BPATH/$VERSION_NGINX
 mkdir -p $BPATH/nginx
 ./configure --with-cc-opt="-I $STATICLIBSSL/include -I/usr/include" \
@@ -120,10 +121,10 @@ mkdir -p $BPATH/nginx
 --with-http_slice_module \
 && make && make install
 
-# rename the compiled 'default' /etc/nginx directory so its accessible as a reference to the new nginx defaults
+# Rename the compiled 'default' /etc/nginx directory so its accessible as a reference to the new nginx defaults
 mv /etc/nginx /etc/nginx-default
 
-# now restore the previous version of /etc/nginx to /etc/nginx so the old settings are kept
+# Restore the previous version of /etc/nginx to /etc/nginx so the old settings are kept
 mv /etc/nginx-$today /etc/nginx
 
 echo "All done.";
@@ -131,4 +132,3 @@ echo "This build has not edited your existing /etc/nginx directory.";
 echo "If things aren't working now you may need to refer to the";
 echo "configuration files the new nginx ships with as defaults,";
 echo "which are available at /etc/nginx-default";
-
