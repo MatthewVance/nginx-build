@@ -14,6 +14,10 @@ export SHA256_PCRE=9883e419c336c63b0cb5202b09537c140966d585e4d0da66147dc513da13e
 export SHA256_OPENSSL=1d4007e53aad94a5b2002fe045ee7bb0b3d98f1a47f8b2bc851dcd1c74332919
 export SHA256_NGINX=a0327be3e647bdc4a1b3ef98946a8e8fbf258ce8da6bed9a94222b249ae2700a
 
+# GPG keys
+export GPG_OPENSSL=8657ABB260F056B1E5190839D9C4D26D0E604491
+export GPG_NGINX=B0F4253373F8F6F510D42178520A9993A1C052F8
+
 # URLs to the source directories
 export SOURCE_OPENSSL=https://www.openssl.org/source/
 export SOURCE_PCRE=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/
@@ -41,8 +45,20 @@ curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz -o ./build/OPENSSL.tar.gz && \
 curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz -o ./build/NGINX.tar.gz && \
   echo "${SHA256_NGINX} ./build/NGINX.tar.gz" | sha256sum -c -
 
-# expand the source files
+# grab the signature files
+curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz.asc -o ./build/OPENSSL.tar.gz.asc
+curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz.asc -o ./build/NGINX.tar.gz.asc
+
+# check GPG signature
 cd build
+export GNUPGHOME="$(mktemp -d)"
+gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_OPENSSL"
+gpg --batch --verify OPENSSL.tar.gz.asc OPENSSL.tar.gz
+gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_NGINX"
+gpg --batch --verify NGINX.tar.gz.asc NGINX.tar.gz
+rm -r "$GNUPGHOME" OPENSSL.tar.gz.asc NGINX.tar.gz.asc
+
+# expand the source files
 tar xzf PCRE.tar.gz
 tar xzf OPENSSL.tar.gz
 tar xzf NGINX.tar.gz
