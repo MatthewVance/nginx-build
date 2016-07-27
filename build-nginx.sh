@@ -8,12 +8,12 @@ set -e -x
 # Set names of latest versions of each package
 export VERSION_PCRE=pcre-8.38
 export VERSION_OPENSSL=openssl-1.0.2h
-export VERSION_NGINX=nginx-1.11.2
+export VERSION_NGINX=nginx-1.11.3
 
 # Set checksums of latest versions
 export SHA256_PCRE=9883e419c336c63b0cb5202b09537c140966d585e4d0da66147dc513da13e629
 export SHA256_OPENSSL=1d4007e53aad94a5b2002fe045ee7bb0b3d98f1a47f8b2bc851dcd1c74332919
-export SHA256_NGINX=a0327be3e647bdc4a1b3ef98946a8e8fbf258ce8da6bed9a94222b249ae2700a
+export SHA256_NGINX=4a667f40f9f3917069db1dea1f2d5baa612f1fa19378aadf71502e846a424610
 
 # Set GPG keys used to sign downloads
 export GPG_OPENSSL=8657ABB260F056B1E5190839D9C4D26D0E604491
