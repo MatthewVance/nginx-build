@@ -6,5 +6,5 @@ This is based on the [build_nginx.sh](https://gist.github.com/MattWilcox/402e2e8
 
 ## License
 
-Unless otherwise specified, all code is released under the MIT License (MIT). See the [repository's `LICENSE` file](https://github.com/MatthewVance/testssl-docker/blob/master/LICENSE) for details.
+Unless otherwise specified, all code is released under the MIT License (MIT). See the [repository's `LICENSE` file](https://github.com/MatthewVance/nginx-build/blob/master/LICENSE) for details.
 
