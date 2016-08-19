@@ -34,6 +34,7 @@ mkdir build
 
 # Ensure the required software to compile nginx is installed
 apt-get update && apt-get -y install \
+  binutils \
   build-essential \
   curl \
   libssl-dev
@@ -139,7 +140,8 @@ mkdir -p $BPATH/nginx
 --with-stream \
 --with-stream_ssl_module \
 --with-http_slice_module \
-&& make && make install
+&& make && make install && make clean
+strip -s /usr/sbin/nginx
 
 if [ -d "/etc/nginx-$today" ]; then
   # Rename the compiled 'default' /etc/nginx directory so its accessible as a reference to the new nginx defaults
