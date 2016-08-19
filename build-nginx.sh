@@ -102,8 +102,8 @@ cd $BPATH/$VERSION_NGINX
 mkdir -p $BPATH/nginx
 ./configure \
 --prefix=/etc/nginx \
---with-cc-opt="-I $STATICLIBSSL/include -I/usr/include" \
---with-ld-opt="-L $STATICLIBSSL/lib -Wl,-rpath -lssl -lcrypto -ldl -lz" \
+--with-cc-opt="-I $STATICLIBSSL/include -I/usr/include -O3 -fPIE -fstack-protector-strong -Wformat -Werror=format-security" \
+--with-ld-opt="-L $STATICLIBSSL/lib -Wl,-Bsymbolic-functions -Wl,-z,relro,-rpath -lssl -lcrypto -ldl -lz" \
 --with-openssl=$BPATH/$VERSION_OPENSSL \
 --with-pcre=$BPATH/$VERSION_PCRE \
 --sbin-path=/usr/sbin/nginx \
