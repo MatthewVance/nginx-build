@@ -136,6 +136,7 @@ mkdir -p $BPATH/nginx
 --without-mail_smtp_module \
 --with-http_v2_module \
 --with-ipv6 \
+--with-pcre-jit \
 --with-threads \
 --with-stream \
 --with-stream_ssl_module \
