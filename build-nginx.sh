@@ -131,6 +131,12 @@ mkdir -p $BPATH/nginx
 --with-http_stub_status_module \
 --with-http_auth_request_module \
 --with-file-aio \
+--without-http_empty_gif_module \
+--without-http_geo_module \
+--without-http_map_module \
+--without-http_memcached_module \
+--without-http_split_clients_module \
+--without-http_ssi_module \
 --without-mail_imap_module \
 --without-mail_pop3_module \
 --without-mail_smtp_module \
