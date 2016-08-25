@@ -24,13 +24,16 @@ export SOURCE_OPENSSL=https://www.openssl.org/source/
 export SOURCE_PCRE=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/
 export SOURCE_NGINX=http://nginx.org/download/
 
+# Set where OpenSSL and nginx will be built
+export BPATH=$(pwd)/build
+
 # Make a 'today' variable for use in back-up filenames later
 today=$(date +"%Y-%m-%d")
 
 # Clean out any files from previous runs of this script
 rm -rf build
 rm -rf /etc/nginx-default
-mkdir build
+mkdir $BPATH
 
 # Ensure the required software to compile nginx is installed
 apt-get update && apt-get -y install \
@@ -52,7 +55,7 @@ curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz.asc -o ./build/OPENSSL.tar.gz.asc
 curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz.asc -o ./build/NGINX.tar.gz.asc
 
 # Verify GPG signature of downloads
-cd build
+cd $BPATH
 export GNUPGHOME="$(mktemp -d)"
 gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_OPENSSL"
 gpg --batch --verify OPENSSL.tar.gz.asc OPENSSL.tar.gz
@@ -66,8 +69,7 @@ tar xzf OPENSSL.tar.gz
 tar xzf NGINX.tar.gz
 cd ../
 
-# Set where OpenSSL and nginx will be built
-export BPATH=$(pwd)/build
+# Set where OpenSSL will be built
 export STATICLIBSSL="$BPATH/staticlibssl"
 
 # Build static OpenSSL
