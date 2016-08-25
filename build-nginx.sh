@@ -100,7 +100,6 @@ id -u nginx &>/dev/null || adduser --system --no-create-home --disabled-login --
 
 # Build nginx, with various modules included/excluded
 cd $BPATH/$VERSION_NGINX
-mkdir -p $BPATH/nginx
 ./configure \
 --prefix=/etc/nginx \
 --with-cc-opt="-I $STATICLIBSSL/include -I/usr/include -O3 -fPIE -fstack-protector-strong -Wformat -Werror=format-security" \
