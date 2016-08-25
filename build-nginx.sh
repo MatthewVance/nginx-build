@@ -97,8 +97,9 @@ if [ ! -d "/var/cache/nginx/" ]; then
     /var/cache/nginx/scgi_temp
 fi
 
-# Add nginx user and group if nginx user does not already exist
-id -u nginx &>/dev/null || adduser --system --no-create-home --disabled-login --disabled-password --group nginx
+# Add nginx group and user if they do not already exist
+id -g nginx &>/dev/null || addgroup --system nginx
+id -u nginx &>/dev/null || adduser --disabled-password --system --home /var/cache/nginx --shell /sbin/nologin --group nginx
 
 # Build nginx, with various modules included/excluded
 cd $BPATH/$VERSION_NGINX
