@@ -7,11 +7,13 @@ set -e -x
 
 # Set names of latest versions of each package
 export VERSION_PCRE=pcre-8.39
+export VERSION_ZLIB=zlib-1.2.8
 export VERSION_OPENSSL=openssl-1.0.2h
 export VERSION_NGINX=nginx-1.11.3
 
 # Set checksums of latest versions
 export SHA256_PCRE=ccdf7e788769838f8285b3ee672ed573358202305ee361cfec7a4a4fb005bbc7
+export SHA256_ZLIB=36658cb768a54c1d4dec43c3116c27ed893e88b02ecfcb44f2166f9c0b7f2a0d
 export SHA256_OPENSSL=1d4007e53aad94a5b2002fe045ee7bb0b3d98f1a47f8b2bc851dcd1c74332919
 export SHA256_NGINX=4a667f40f9f3917069db1dea1f2d5baa612f1fa19378aadf71502e846a424610
 
@@ -22,6 +24,7 @@ export GPG_NGINX=B0F4253373F8F6F510D42178520A9993A1C052F8
 # Set URLs to the source directories
 export SOURCE_OPENSSL=https://www.openssl.org/source/
 export SOURCE_PCRE=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/
+export SOURCE_ZLIB=http://zlib.net/
 export SOURCE_NGINX=http://nginx.org/download/
 
 # Set where OpenSSL and nginx will be built
@@ -45,6 +48,8 @@ apt-get update && apt-get -y install \
 # Download the source files
 curl -L $SOURCE_PCRE$VERSION_PCRE.tar.gz -o ./build/PCRE.tar.gz && \
   echo "${SHA256_PCRE} ./build/PCRE.tar.gz" | sha256sum -c -
+curl -L $SOURCE_ZLIB$VERSION_ZLIB.tar.gz -o ./build/ZLIB.tar.gz && \
+  echo "${SHA256_ZLIB} ./build/ZLIB.tar.gz" | sha256sum -c -
 curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz -o ./build/OPENSSL.tar.gz && \
   echo "${SHA256_OPENSSL} ./build/OPENSSL.tar.gz" | sha256sum -c -
 curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz -o ./build/NGINX.tar.gz && \
@@ -65,11 +70,13 @@ rm -r "$GNUPGHOME" OPENSSL.tar.gz.asc NGINX.tar.gz.asc
 
 # Expand the source files
 tar xzf PCRE.tar.gz
+tar xzf ZLIB.tar.gz
 tar xzf OPENSSL.tar.gz
 tar xzf NGINX.tar.gz
 # Clean up
 rm -r \
   PCRE.tar.gz \
+  ZLIB.tar.gz \
   OPENSSL.tar.gz \
   NGINX.tar.gz
 cd ../
@@ -114,6 +121,7 @@ cd $BPATH/$VERSION_NGINX
 --with-ld-opt="-L $STATICLIBSSL/lib -Wl,-Bsymbolic-functions -Wl,-z,relro,-rpath -lssl -lcrypto -ldl -lz" \
 --with-openssl=$BPATH/$VERSION_OPENSSL \
 --with-pcre=$BPATH/$VERSION_PCRE \
+--with-zlib=$BPATH/$VERSION_ZLIB \
 --sbin-path=/usr/sbin/nginx \
 --modules-path=/usr/lib/nginx/modules \
 --conf-path=/etc/nginx/nginx.conf \
