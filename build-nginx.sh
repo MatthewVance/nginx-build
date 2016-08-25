@@ -67,6 +67,11 @@ rm -r "$GNUPGHOME" OPENSSL.tar.gz.asc NGINX.tar.gz.asc
 tar xzf PCRE.tar.gz
 tar xzf OPENSSL.tar.gz
 tar xzf NGINX.tar.gz
+# Clean up
+rm -r \
+  PCRE.tar.gz \
+  OPENSSL.tar.gz \
+  NGINX.tar.gz
 cd ../
 
 # Set where OpenSSL will be built
