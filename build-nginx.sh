@@ -136,16 +136,23 @@ cd $BPATH/$VERSION_NGINX
 --http-scgi-temp-path=/var/cache/nginx/scgi_temp \
 --user=nginx \
 --group=nginx \
---with-http_ssl_module \
---with-http_realip_module \
---with-http_sub_module \
---with-http_mp4_module \
+--with-file-aio \
+--with-http_auth_request_module \
 --with-http_gunzip_module \
 --with-http_gzip_static_module \
+--with-http_mp4_module \
+--with-http_realip_module \
 --with-http_secure_link_module \
+--with-http_slice_module \
+--with-http_ssl_module \
 --with-http_stub_status_module \
---with-http_auth_request_module \
---with-file-aio \
+--with-http_sub_module \
+--with-http_v2_module \
+--with-ipv6 \
+--with-pcre-jit \
+--with-stream \
+--with-stream_ssl_module \
+--with-threads \
 --without-http_empty_gif_module \
 --without-http_geo_module \
 --without-http_map_module \
@@ -154,14 +161,7 @@ cd $BPATH/$VERSION_NGINX
 --without-http_ssi_module \
 --without-mail_imap_module \
 --without-mail_pop3_module \
---without-mail_smtp_module \
---with-http_v2_module \
---with-ipv6 \
---with-pcre-jit \
---with-threads \
---with-stream \
---with-stream_ssl_module \
---with-http_slice_module \
+--without-mail_smtp_module
 && make && make install && make clean
 strip -s /usr/sbin/nginx
 
