@@ -162,7 +162,7 @@ cd $BPATH/$VERSION_NGINX
 --without-mail_pop3_module \
 --without-mail_smtp_module
 && make && make install && make clean
-strip -s /usr/sbin/nginx
+strip -s /usr/sbin/nginx*
 
 if [ -d "/etc/nginx-$today" ]; then
   # Rename the compiled 'default' /etc/nginx directory so its accessible as a reference to the new nginx defaults
