@@ -1,10 +1,10 @@
 # NGINX Build Script
 
-This is an NGINX build script which compiles NGINX with a statically linked version of OpenSSL. It's been tested to work on a Raspberry Pi 2 Model B running Raspbian Jessie Lite, Ubuntu 16.04, and Debian 8. However, it should also work on other Debian-based Linux distros. 
+This is an NGINX build script which compiles NGINX with a custom version of OpenSSL. It should work on other Debian-based Linux distros. 
 
 The benefit of building from source is you can customize the modules to your needs and always use the latest versions of NGINX and OpenSSL. 
 
-Compiling OpenSSL will take time, especially on a Raspberry Pi, so be patient. You could remove the OpenSSL portions from the script. Doing so means NGINX will use the system version. As a result, you might not be able to use all the latest OpenSSL ciphers and features.
+Compiling will take time, especially on a Raspberry Pi, so be patient.
 
 ## Usage
 

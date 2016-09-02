@@ -81,19 +81,6 @@ rm -r \
   NGINX.tar.gz
 cd ../
 
-# Set where OpenSSL will be built
-export STATICLIBSSL="$BPATH/staticlibssl"
-
-# Build static OpenSSL
-cd $BPATH/$VERSION_OPENSSL
-rm -rf "$STATICLIBSSL"
-mkdir "$STATICLIBSSL"
-make clean
-./config --prefix=$STATICLIBSSL no-shared no-ssl2 no-ssl3 no-idea \
-&& make depend \
-&& make \
-&& make install_sw
-
 # Rename the existing /etc/nginx directory so it's saved as a back-up
 if [ -d "/etc/nginx" ]; then
   mv /etc/nginx /etc/nginx-$today
@@ -117,11 +104,12 @@ id -u nginx &>/dev/null || adduser --disabled-password --system --home /var/cach
 cd $BPATH/$VERSION_NGINX
 ./configure \
 --prefix=/etc/nginx \
---with-cc-opt="-I $STATICLIBSSL/include -I/usr/include -O3 -fPIE -fstack-protector-strong -Wformat -Werror=format-security" \
---with-ld-opt="-L $STATICLIBSSL/lib -Wl,-Bsymbolic-functions -Wl,-z,relro,-rpath -lssl -lcrypto -ldl -lz" \
---with-openssl=$BPATH/$VERSION_OPENSSL \
+--with-cc-opt='-O3 -fPIE -fstack-protector-strong -Wformat -Werror=format-security' \
+--with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro' \
 --with-pcre=$BPATH/$VERSION_PCRE \
 --with-zlib=$BPATH/$VERSION_ZLIB \
+--with-openssl-opt="no-weak-ssl-ciphers no-ssl2 no-ssl3 no-krb5 no-shared enable-ec_nistp_64_gcc_128 -DOPENSSL_NO_HEARTBEATS -fstack-protector-strong" \
+--with-openssl=$BPATH/$VERSION_OPENSSL \
 --sbin-path=/usr/sbin/nginx \
 --modules-path=/usr/lib/nginx/modules \
 --conf-path=/etc/nginx/nginx.conf \
