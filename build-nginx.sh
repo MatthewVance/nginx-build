@@ -100,6 +100,14 @@ fi
 id -g nginx &>/dev/null || addgroup --system nginx
 id -u nginx &>/dev/null || adduser --disabled-password --system --home /var/cache/nginx --shell /sbin/nologin --group nginx
 
+# Test to see if our version of gcc supports __SIZEOF_INT128__
+if gcc -dM -E - </dev/null | grep -q __SIZEOF_INT128__
+then
+ECFLAG="enable-ec_nistp_64_gcc_128"
+else
+ECFLAG=""
+fi
+
 # Build nginx, with various modules included/excluded
 cd $BPATH/$VERSION_NGINX
 ./configure \
@@ -108,7 +116,7 @@ cd $BPATH/$VERSION_NGINX
 --with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro' \
 --with-pcre=$BPATH/$VERSION_PCRE \
 --with-zlib=$BPATH/$VERSION_ZLIB \
---with-openssl-opt="no-weak-ssl-ciphers no-ssl3 no-shared enable-ec_nistp_64_gcc_128 -DOPENSSL_NO_HEARTBEATS -fstack-protector-strong" \
+--with-openssl-opt="no-weak-ssl-ciphers no-ssl3 no-shared $ECFLAG -DOPENSSL_NO_HEARTBEATS -fstack-protector-strong" \
 --with-openssl=$BPATH/$VERSION_OPENSSL \
 --sbin-path=/usr/sbin/nginx \
 --modules-path=/usr/lib/nginx/modules \
