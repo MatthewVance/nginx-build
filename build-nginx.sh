@@ -8,13 +8,13 @@ set -e -x
 # Set names of latest versions of each package
 export VERSION_PCRE=pcre-8.39
 export VERSION_ZLIB=zlib-1.2.8
-export VERSION_OPENSSL=openssl-1.1.0c
+export VERSION_OPENSSL=openssl-1.1.0d
 export VERSION_NGINX=nginx-1.11.9
 
 # Set checksums of latest versions
 export SHA256_PCRE=ccdf7e788769838f8285b3ee672ed573358202305ee361cfec7a4a4fb005bbc7
 export SHA256_ZLIB=36658cb768a54c1d4dec43c3116c27ed893e88b02ecfcb44f2166f9c0b7f2a0d
-export SHA256_OPENSSL=fc436441a2e05752d31b4e46115eb89709a28aef96d4fe786abe92409b2fd6f5
+export SHA256_OPENSSL=7d5ebb9e89756545c156ff9c13cf2aa6214193b010a468a3bc789c3c28fe60df
 export SHA256_NGINX=dc22b71f16b551705930544dc042f1ad1af2f9715f565187ec22c7a4b2625748
 
 # Set GPG keys used to sign downloads
