@@ -6,13 +6,13 @@
 set -e -x
 
 # Set names of latest versions of each package
-export VERSION_PCRE=pcre-8.40
+export VERSION_PCRE=pcre-8.41
 export VERSION_ZLIB=zlib-1.2.11
 export VERSION_OPENSSL=openssl-1.1.0f
 export VERSION_NGINX=nginx-1.13.4
 
 # Set checksums of latest versions
-export SHA256_PCRE=1d75ce90ea3f81ee080cdc04e68c9c25a9fb984861a0618be7bbf676b18eda3e
+export SHA256_PCRE=244838e1f1d14f7e2fa7681b857b3a8566b74215f28133f14a8f5e59241b682c
 export SHA256_ZLIB=c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1
 export SHA256_OPENSSL=12f746f3f2493b2f39da7ecf63d7ee19c6ac9ec6a4fcd8c229da8a522cb12765
 export SHA256_NGINX=de21f3c49ba65c611329d8759a63d72e5fcf719bc6f2a3270e2541348ef1fbba
