@@ -23,7 +23,7 @@ export GPG_NGINX=B0F4253373F8F6F510D42178520A9993A1C052F8
 
 # Set URLs to the source directories
 export SOURCE_OPENSSL=https://www.openssl.org/source/
-export SOURCE_PCRE=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/
+export SOURCE_PCRE=https://ftp.pcre.org/pub/pcre/
 export SOURCE_ZLIB=http://zlib.net/
 export SOURCE_NGINX=http://nginx.org/download/
 
