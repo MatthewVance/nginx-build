@@ -43,6 +43,7 @@ apt-get update && apt-get -y install \
   binutils \
   build-essential \
   curl \
+  dirmngr \
   libssl-dev
 
 # Download the source files
