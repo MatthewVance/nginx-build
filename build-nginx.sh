@@ -42,6 +42,7 @@ mkdir $BPATH
 apt-get update && apt-get -y install \
   binutils \
   build-essential \
+  dirmngr \
   curl \
   libssl-dev
 
