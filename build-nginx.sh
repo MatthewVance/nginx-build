@@ -18,6 +18,8 @@ export SHA256_OPENSSL=5835626cde9e99656585fc7aaa2302a73a7e1340bf8c14fd635a62c668
 export SHA256_NGINX=fb92f5602cdb8d3ab1ad47dbeca151b185d62eedb67d347bbe9d79c1438c85de
 
 # Set GPG keys used to sign downloads
+export GPG_PCRE=45F68D54BBE23FB3039B46E59766E084FB0F43D8
+export GPG_ZLIB=5ED46A6721D365587791E2AA783FCD8E58BCAFBA
 export GPG_OPENSSL=8657ABB260F056B1E5190839D9C4D26D0E604491
 export GPG_NGINX=B0F4253373F8F6F510D42178520A9993A1C052F8
 
@@ -57,17 +59,23 @@ curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz -o ./build/NGINX.tar.gz && \
   echo "${SHA256_NGINX} ./build/NGINX.tar.gz" | sha256sum -c -
 
 # Download the signature files
+curl -L $SOURCE_PCRE$VERSION_PCRE.tar.gz.sig -o ./build/PCRE.tar.gz.sig
+curl -L $SOURCE_ZLIB$VERSION_ZLIB.tar.gz.asc -o ./build/ZLIB.tar.gz.asc
 curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz.asc -o ./build/OPENSSL.tar.gz.asc
 curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz.asc -o ./build/NGINX.tar.gz.asc
 
 # Verify GPG signature of downloads
 cd $BPATH
 export GNUPGHOME="$(mktemp -d)"
+gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_PCRE"
+gpg --batch --verify PCRE.tar.gz.sig PCRE.tar.gz
+gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_ZLIB"
+gpg --batch --verify ZLIB.tar.gz.asc ZLIB.tar.gz
 gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_OPENSSL"
 gpg --batch --verify OPENSSL.tar.gz.asc OPENSSL.tar.gz
 gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_NGINX"
 gpg --batch --verify NGINX.tar.gz.asc NGINX.tar.gz
-rm -r "$GNUPGHOME" OPENSSL.tar.gz.asc NGINX.tar.gz.asc
+rm -r "$GNUPGHOME" PCRE.tar.gz.sig ZLIB.tar.gz.asc OPENSSL.tar.gz.asc NGINX.tar.gz.asc
 
 # Expand the source files
 tar xzf PCRE.tar.gz
