@@ -62,12 +62,11 @@ curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz.asc -o ./build/NGINX.tar.gz.asc
 
 # Verify GPG signature of downloads
 cd $BPATH
-export GNUPGHOME="$(mktemp -d)"
 gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_OPENSSL"
 gpg --batch --verify OPENSSL.tar.gz.asc OPENSSL.tar.gz
 gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_NGINX"
 gpg --batch --verify NGINX.tar.gz.asc NGINX.tar.gz
-rm -r "$GNUPGHOME" OPENSSL.tar.gz.asc NGINX.tar.gz.asc
+rm -r OPENSSL.tar.gz.asc NGINX.tar.gz.asc
 
 # Expand the source files
 tar xzf PCRE.tar.gz
