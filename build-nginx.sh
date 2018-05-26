@@ -69,19 +69,20 @@ cd $BPATH
 export GNUPGHOME="$(mktemp -d)"
 gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_PCRE" "$GPG_ZLIB" "$GPG_OPENSSL" "$GPG_NGINX"
 gpg --batch --multifile --verify PCRE.tar.gz.sig ZLIB.tar.gz.asc OPENSSL.tar.gz.asc NGINX.tar.gz.asc
-rm -r "$GNUPGHOME" PCRE.tar.gz.sig ZLIB.tar.gz.asc OPENSSL.tar.gz.asc NGINX.tar.gz.asc
 
 # Expand the source files
 tar xzf PCRE.tar.gz
 tar xzf ZLIB.tar.gz
 tar xzf OPENSSL.tar.gz
 tar xzf NGINX.tar.gz
+
 # Clean up
 rm -r \
-  PCRE.tar.gz \
-  ZLIB.tar.gz \
-  OPENSSL.tar.gz \
-  NGINX.tar.gz
+  "$GNUPGHOME" \
+  PCRE.tar.* \
+  ZLIB.tar.* \
+  OPENSSL.tar.* \
+  NGINX.tar.*
 cd ../
 
 # Rename the existing /etc/nginx directory so it's saved as a back-up
