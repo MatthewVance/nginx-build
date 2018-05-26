@@ -68,7 +68,10 @@ curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz.asc -o ./build/NGINX.tar.gz.asc
 cd $BPATH
 export GNUPGHOME="$(mktemp -d)"
 gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$OPGP_PCRE" "$OPGP_ZLIB" "$OPGP_OPENSSL" "$OPGP_NGINX"
-gpg --batch --multifile --verify PCRE.tar.gz.sig ZLIB.tar.gz.asc OPENSSL.tar.gz.asc NGINX.tar.gz.asc
+gpg --batch --verify PCRE.tar.gz.sig PCRE.tar.gz
+gpg --batch --verify ZLIB.tar.gz.asc ZLIB.tar.gz
+gpg --batch --verify OPENSSL.tar.gz.asc OPENSSL.tar.gz
+gpg --batch --verify NGINX.tar.gz.asc NGINX.tar.gz
 
 # Expand the source files
 tar xzf PCRE.tar.gz
