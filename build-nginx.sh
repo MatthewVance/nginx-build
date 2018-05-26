@@ -17,11 +17,11 @@ export SHA256_ZLIB=c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb
 export SHA256_OPENSSL=5835626cde9e99656585fc7aaa2302a73a7e1340bf8c14fd635a62c66802a517
 export SHA256_NGINX=fb92f5602cdb8d3ab1ad47dbeca151b185d62eedb67d347bbe9d79c1438c85de
 
-# Set GPG keys used to sign downloads
-export GPG_PCRE=45F68D54BBE23FB3039B46E59766E084FB0F43D8
-export GPG_ZLIB=5ED46A6721D365587791E2AA783FCD8E58BCAFBA
-export GPG_OPENSSL=8657ABB260F056B1E5190839D9C4D26D0E604491
-export GPG_NGINX=B0F4253373F8F6F510D42178520A9993A1C052F8
+# Set OpenPGP keys used to sign downloads
+export OPGP_PCRE=45F68D54BBE23FB3039B46E59766E084FB0F43D8
+export OPGP_ZLIB=5ED46A6721D365587791E2AA783FCD8E58BCAFBA
+export OPGP_OPENSSL=8657ABB260F056B1E5190839D9C4D26D0E604491
+export OPGP_NGINX=B0F4253373F8F6F510D42178520A9993A1C052F8
 
 # Set URLs to the source directories
 export SOURCE_OPENSSL=https://www.openssl.org/source/
@@ -64,10 +64,10 @@ curl -L $SOURCE_ZLIB$VERSION_ZLIB.tar.gz.asc -o ./build/ZLIB.tar.gz.asc
 curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz.asc -o ./build/OPENSSL.tar.gz.asc
 curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz.asc -o ./build/NGINX.tar.gz.asc
 
-# Verify GPG signature of downloads
+# Verify OpenPGP signature of downloads
 cd $BPATH
 export GNUPGHOME="$(mktemp -d)"
-gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_PCRE" "$GPG_ZLIB" "$GPG_OPENSSL" "$GPG_NGINX"
+gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$OPGP_PCRE" "$OPGP_ZLIB" "$OPGP_OPENSSL" "$OPGP_NGINX"
 gpg --batch --multifile --verify PCRE.tar.gz.sig ZLIB.tar.gz.asc OPENSSL.tar.gz.asc NGINX.tar.gz.asc
 
 # Expand the source files
