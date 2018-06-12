@@ -59,8 +59,8 @@ curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz -o ./build/NGINX.tar.gz && \
   echo "${SHA256_NGINX} ./build/NGINX.tar.gz" | sha256sum -c -
 
 # Download the signature files
-curl -L $SOURCE_PCRE$VERSION_PCRE.tar.gz.sig -o ./build/PCRE.tar.gz.sig
-curl -L $SOURCE_ZLIB$VERSION_ZLIB.tar.gz.asc -o ./build/ZLIB.tar.gz.asc
+curl -L $SOURCE_PCRE$VERSION_PCRE.tar.gz.sig -o ${BPATH}/PCRE.tar.gz.sig
+curl -L $SOURCE_ZLIB$VERSION_ZLIB.tar.gz.asc -o ${BPATH}/ZLIB.tar.gz.asc
 curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz.asc -o ./build/OPENSSL.tar.gz.asc
 curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz.asc -o ./build/NGINX.tar.gz.asc
 
