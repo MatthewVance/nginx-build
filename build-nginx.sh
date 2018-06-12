@@ -9,13 +9,13 @@ set -e -x
 export VERSION_PCRE=pcre-8.42
 export VERSION_ZLIB=zlib-1.2.11
 export VERSION_OPENSSL=openssl-1.1.0h
-export VERSION_NGINX=nginx-1.13.12
+export VERSION_NGINX=nginx-1.15.0
 
 # Set checksums of latest versions
 export SHA256_PCRE=69acbc2fbdefb955d42a4c606dfde800c2885711d2979e356c0636efde9ec3b5
 export SHA256_ZLIB=c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1
 export SHA256_OPENSSL=5835626cde9e99656585fc7aaa2302a73a7e1340bf8c14fd635a62c66802a517
-export SHA256_NGINX=fb92f5602cdb8d3ab1ad47dbeca151b185d62eedb67d347bbe9d79c1438c85de
+export SHA256_NGINX=b0b58c9a3fd73aa8b89edf5cfadc6641a352e0e6d3071db1eb3215d72b7fb516
 
 # Set OpenPGP keys used to sign downloads
 export OPGP_PCRE=45F68D54BBE23FB3039B46E59766E084FB0F43D8
@@ -36,7 +36,7 @@ export BPATH=$(pwd)/build
 today=$(date +"%Y-%m-%d")
 
 # Clean out any files from previous runs of this script
-rm -rf build
+rm -rf $BPATH
 rm -rf /etc/nginx-default
 mkdir $BPATH
 
@@ -49,20 +49,20 @@ apt-get update && apt-get -y install \
   libssl-dev
 
 # Download the source files
-curl -L $SOURCE_PCRE$VERSION_PCRE.tar.gz -o ./build/PCRE.tar.gz && \
-  echo "${SHA256_PCRE} ./build/PCRE.tar.gz" | sha256sum -c -
-curl -L $SOURCE_ZLIB$VERSION_ZLIB.tar.gz -o ./build/ZLIB.tar.gz && \
-  echo "${SHA256_ZLIB} ./build/ZLIB.tar.gz" | sha256sum -c -
-curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz -o ./build/OPENSSL.tar.gz && \
-  echo "${SHA256_OPENSSL} ./build/OPENSSL.tar.gz" | sha256sum -c -
-curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz -o ./build/NGINX.tar.gz && \
-  echo "${SHA256_NGINX} ./build/NGINX.tar.gz" | sha256sum -c -
+curl -L $SOURCE_PCRE$VERSION_PCRE.tar.gz -o $BPATH/PCRE.tar.gz && \
+  echo "${SHA256_PCRE} ${BPATH}/PCRE.tar.gz" | sha256sum -c -
+curl -L $SOURCE_ZLIB$VERSION_ZLIB.tar.gz -o $BPATH/ZLIB.tar.gz && \
+  echo "${SHA256_ZLIB} ${BPATH}/ZLIB.tar.gz" | sha256sum -c -
+curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz -o $BPATH/OPENSSL.tar.gz && \
+  echo "${SHA256_OPENSSL} ${BPATH}/OPENSSL.tar.gz" | sha256sum -c -
+curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz -o $BPATH/NGINX.tar.gz && \
+  echo "${SHA256_NGINX} ${BPATH}/NGINX.tar.gz" | sha256sum -c -
 
 # Download the signature files
-curl -L $SOURCE_PCRE$VERSION_PCRE.tar.gz.sig -o ${BPATH}/PCRE.tar.gz.sig
-curl -L $SOURCE_ZLIB$VERSION_ZLIB.tar.gz.asc -o ${BPATH}/ZLIB.tar.gz.asc
-curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz.asc -o ./build/OPENSSL.tar.gz.asc
-curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz.asc -o ./build/NGINX.tar.gz.asc
+curl -L $SOURCE_PCRE$VERSION_PCRE.tar.gz.sig -o $BPATH/PCRE.tar.gz.sig
+curl -L $SOURCE_ZLIB$VERSION_ZLIB.tar.gz.asc -o $BPATH/ZLIB.tar.gz.asc
+curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz.asc -o $BPATH/OPENSSL.tar.gz.asc
+curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz.asc -o $BPATH/NGINX.tar.gz.asc
 
 # Verify OpenPGP signature of downloads
 cd $BPATH
