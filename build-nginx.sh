@@ -36,7 +36,7 @@ SOURCE_NGINX=https://nginx.org/download/
 # Set where OpenSSL and nginx will be built
 BPATH=$(pwd)/build
 
-# Make a 'today' variable for use in back-up filenames later
+# Make a "today" variable for use in back-up filenames later
 today=$(date +"%Y-%m-%d")
 
 # Clean out any files from previous runs of this script
@@ -92,7 +92,7 @@ cd ../
 
 # Rename the existing /etc/nginx directory so it's saved as a back-up
 if [ -d "/etc/nginx" ]; then
-  mv /etc/nginx /etc/nginx-$today
+  mv /etc/nginx "/etc/nginx-${today}"
 fi
 
 # Create NGINX cache directories if they do not already exist
@@ -169,12 +169,12 @@ make install
 make clean
 strip -s /usr/sbin/nginx*
 
-if [ -d "/etc/nginx-$today" ]; then
+if [ -d "/etc/nginx-${today}" ]; then
   # Rename the compiled 'default' /etc/nginx directory so its accessible as a reference to the new nginx defaults
   mv /etc/nginx /etc/nginx-default
 
   # Restore the previous version of /etc/nginx to /etc/nginx so the old settings are kept
-  mv /etc/nginx-$today /etc/nginx
+  mv "/etc/nginx-${today}" /etc/nginx
 fi
 
 # Create NGINX systemd service file if it does not already exist
