@@ -78,10 +78,9 @@ gpg --batch --verify OPENSSL.tar.gz.asc OPENSSL.tar.gz
 gpg --batch --verify NGINX.tar.gz.asc NGINX.tar.gz
 
 # Expand the source files
-tar xzf PCRE.tar.gz
-tar xzf ZLIB.tar.gz
-tar xzf OPENSSL.tar.gz
-tar xzf NGINX.tar.gz
+for archive in *.tar.gz; do
+  tar xzf "$archive"
+done
 
 # Clean up
 rm -r \
