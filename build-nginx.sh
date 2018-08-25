@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 # Run as root or with sudo
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run as root or with sudo."
+  exit 1
+fi
 
 # Make script exit if a simple command fails and
 # Make script print commands being executed
