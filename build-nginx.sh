@@ -43,7 +43,7 @@ today=$(date +"%Y-%m-%d")
 rm -rf \
   "$BPATH" \
   /etc/nginx-default
-mkdir $BPATH
+mkdir "$BPATH"
 
 # Ensure the required software to compile nginx is installed
 apt-get update && apt-get -y install \
@@ -54,23 +54,23 @@ apt-get update && apt-get -y install \
   libssl-dev
 
 # Download the source files
-curl -L $SOURCE_PCRE$VERSION_PCRE.tar.gz -o $BPATH/PCRE.tar.gz && \
+curl -L "${SOURCE_PCRE}${VERSION_PCRE}.tar.gz" -o "${BPATH}/PCRE.tar.gz" && \
   echo "${SHA256_PCRE} ${BPATH}/PCRE.tar.gz" | sha256sum -c -
-curl -L $SOURCE_ZLIB$VERSION_ZLIB.tar.gz -o $BPATH/ZLIB.tar.gz && \
+curl -L "${SOURCE_ZLIB}${VERSION_ZLIB}.tar.gz" -o "${BPATH}/ZLIB.tar.gz" && \
   echo "${SHA256_ZLIB} ${BPATH}/ZLIB.tar.gz" | sha256sum -c -
-curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz -o $BPATH/OPENSSL.tar.gz && \
+curl -L "${SOURCE_OPENSSL}${VERSION_OPENSSL}.tar.gz" -o "${BPATH}/OPENSSL.tar.gz" && \
   echo "${SHA256_OPENSSL} ${BPATH}/OPENSSL.tar.gz" | sha256sum -c -
-curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz -o $BPATH/NGINX.tar.gz && \
+curl -L "${SOURCE_NGINX}${VERSION_NGINX}.tar.gz" -o "${BPATH}/NGINX.tar.gz" && \
   echo "${SHA256_NGINX} ${BPATH}/NGINX.tar.gz" | sha256sum -c -
 
 # Download the signature files
-curl -L $SOURCE_PCRE$VERSION_PCRE.tar.gz.sig -o $BPATH/PCRE.tar.gz.sig
-curl -L $SOURCE_ZLIB$VERSION_ZLIB.tar.gz.asc -o $BPATH/ZLIB.tar.gz.asc
-curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz.asc -o $BPATH/OPENSSL.tar.gz.asc
-curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz.asc -o $BPATH/NGINX.tar.gz.asc
+curl -L "${SOURCE_PCRE}${VERSION_PCRE}.tar.gz.sig" -o "${BPATH}/PCRE.tar.gz.sig"
+curl -L "${SOURCE_ZLIB}${VERSION_ZLIB}.tar.gz.asc" -o "${BPATH}/ZLIB.tar.gz.asc"
+curl -L "${SOURCE_OPENSSL}${VERSION_OPENSSL}.tar.gz.asc" -o "${BPATH}/OPENSSL.tar.gz.asc"
+curl -L "${SOURCE_NGINX}${VERSION_NGINX}.tar.gz.asc" -o "${BPATH}/NGINX.tar.gz.asc"
 
 # Verify OpenPGP signature of downloads
-cd $BPATH
+cd "$BPATH"
 GNUPGHOME="$(mktemp -d)"
 export GNUPGHOME
 gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$OPGP_PCRE" "$OPGP_ZLIB" "$OPGP_OPENSSL" "$OPGP_NGINX"
@@ -118,7 +118,7 @@ else
 fi
 
 # Build nginx, with various modules included/excluded
-cd $BPATH/$VERSION_NGINX
+cd "$BPATH/$VERSION_NGINX"
 ./configure \
   --prefix=/etc/nginx \
   --with-cc-opt="-O3 -fPIE -fstack-protector-strong -Wformat -Werror=format-security" \
