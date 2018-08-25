@@ -45,7 +45,7 @@ rm -rf \
   /etc/nginx-default
 mkdir "$bpath"
 
-# Ensure the required software to compile nginx is installed
+# Ensure the required software to compile NGINX is installed
 apt-get update && apt-get -y install \
   binutils \
   build-essential \
@@ -179,7 +179,7 @@ fi
 
 # Create NGINX systemd service file if it does not already exist
 if [ ! -e "/lib/systemd/system/nginx.service" ]; then
-  # Control will enter here if $DIRECTORY doesn't exist.
+  # Control will enter here if the NGINX service doesn't exist.
   file="/lib/systemd/system/nginx.service"
 
   /bin/cat >$file <<'EOF'
