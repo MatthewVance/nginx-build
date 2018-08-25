@@ -80,14 +80,15 @@ gpg --batch --verify openssl.tar.gz.asc openssl.tar.gz
 gpg --batch --verify nginx.tar.gz.asc nginx.tar.gz
 
 # Expand the source files
-for archive in *.tar.gz; do
+cd "$bpath"
+for archive in ./*.tar.gz; do
   tar xzf "$archive"
 done
 
 # Clean up source files
 rm -rf \
   "$GNUPGHOME" \
-  ./*.tar.*
+  "$bpath"/*.tar.*
 
 # Rename the existing /etc/nginx directory so it's saved as a back-up
 if [ -d "/etc/nginx" ]; then
