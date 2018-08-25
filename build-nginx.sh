@@ -71,7 +71,8 @@ curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz.asc -o $BPATH/NGINX.tar.gz.asc
 
 # Verify OpenPGP signature of downloads
 cd $BPATH
-export GNUPGHOME="$(mktemp -d)"
+GNUPGHOME="$(mktemp -d)"
+export GNUPGHOME
 gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$OPGP_PCRE" "$OPGP_ZLIB" "$OPGP_OPENSSL" "$OPGP_NGINX"
 gpg --batch --verify PCRE.tar.gz.sig PCRE.tar.gz
 gpg --batch --verify ZLIB.tar.gz.asc ZLIB.tar.gz
