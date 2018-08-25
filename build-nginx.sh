@@ -122,50 +122,50 @@ fi
 # Build nginx, with various modules included/excluded
 cd $BPATH/$VERSION_NGINX
 ./configure \
---prefix=/etc/nginx \
---with-cc-opt='-O3 -fPIE -fstack-protector-strong -Wformat -Werror=format-security' \
---with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro' \
---with-pcre=$BPATH/$VERSION_PCRE \
---with-zlib=$BPATH/$VERSION_ZLIB \
---with-openssl-opt="no-weak-ssl-ciphers no-ssl3 no-shared $ECFLAG -DOPENSSL_NO_HEARTBEATS -fstack-protector-strong" \
---with-openssl=$BPATH/$VERSION_OPENSSL \
---sbin-path=/usr/sbin/nginx \
---modules-path=/usr/lib/nginx/modules \
---conf-path=/etc/nginx/nginx.conf \
---error-log-path=/var/log/nginx/error.log \
---http-log-path=/var/log/nginx/access.log \
---pid-path=/var/run/nginx.pid \
---lock-path=/var/run/nginx.lock \
---http-client-body-temp-path=/var/cache/nginx/client_temp \
---http-proxy-temp-path=/var/cache/nginx/proxy_temp \
---http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp \
---http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp \
---http-scgi-temp-path=/var/cache/nginx/scgi_temp \
---user=nginx \
---group=nginx \
---with-file-aio \
---with-http_auth_request_module \
---with-http_gunzip_module \
---with-http_gzip_static_module \
---with-http_mp4_module \
---with-http_realip_module \
---with-http_secure_link_module \
---with-http_slice_module \
---with-http_ssl_module \
---with-http_stub_status_module \
---with-http_sub_module \
---with-http_v2_module \
---with-pcre-jit \
---with-stream \
---with-stream_ssl_module \
---with-threads \
---without-http_empty_gif_module \
---without-http_geo_module \
---without-http_split_clients_module \
---without-http_ssi_module \
---without-mail_imap_module \
---without-mail_pop3_module \
---without-mail_smtp_module
+  --prefix=/etc/nginx \
+  --with-cc-opt="-O3 -fPIE -fstack-protector-strong -Wformat -Werror=format-security" \
+  --with-ld-opt="-Wl,-Bsymbolic-functions -Wl,-z,relro" \
+  --with-pcre="$BPATH/$VERSION_PCRE" \
+  --with-zlib="$BPATH/$VERSION_ZLIB" \
+  --with-openssl-opt="no-weak-ssl-ciphers no-ssl3 no-shared $ECFLAG -DOPENSSL_NO_HEARTBEATS -fstack-protector-strong" \
+  --with-openssl="$BPATH/$VERSION_OPENSSL" \
+  --sbin-path=/usr/sbin/nginx \
+  --modules-path=/usr/lib/nginx/modules \
+  --conf-path=/etc/nginx/nginx.conf \
+  --error-log-path=/var/log/nginx/error.log \
+  --http-log-path=/var/log/nginx/access.log \
+  --pid-path=/var/run/nginx.pid \
+  --lock-path=/var/run/nginx.lock \
+  --http-client-body-temp-path=/var/cache/nginx/client_temp \
+  --http-proxy-temp-path=/var/cache/nginx/proxy_temp \
+  --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp \
+  --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp \
+  --http-scgi-temp-path=/var/cache/nginx/scgi_temp \
+  --user=nginx \
+  --group=nginx \
+  --with-file-aio \
+  --with-http_auth_request_module \
+  --with-http_gunzip_module \
+  --with-http_gzip_static_module \
+  --with-http_mp4_module \
+  --with-http_realip_module \
+  --with-http_secure_link_module \
+  --with-http_slice_module \
+  --with-http_ssl_module \
+  --with-http_stub_status_module \
+  --with-http_sub_module \
+  --with-http_v2_module \
+  --with-pcre-jit \
+  --with-stream \
+  --with-stream_ssl_module \
+  --with-threads \
+  --without-http_empty_gif_module \
+  --without-http_geo_module \
+  --without-http_split_clients_module \
+  --without-http_ssi_module \
+  --without-mail_imap_module \
+  --without-mail_pop3_module \
+  --without-mail_smtp_module
 make
 make install
 make clean
