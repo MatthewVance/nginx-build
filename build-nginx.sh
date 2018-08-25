@@ -84,12 +84,9 @@ for archive in *.tar.gz; do
 done
 
 # Clean up
-rm -r \
+rm -rf \
   "$GNUPGHOME" \
-  PCRE.tar.* \
-  ZLIB.tar.* \
-  OPENSSL.tar.* \
-  NGINX.tar.*
+  ./*.tar.*
 cd ../
 
 # Rename the existing /etc/nginx directory so it's saved as a back-up
