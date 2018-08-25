@@ -33,7 +33,7 @@ SOURCE_ZLIB=https://zlib.net/
 SOURCE_OPENSSL=https://www.openssl.org/source/
 SOURCE_NGINX=https://nginx.org/download/
 
-# Set where OpenSSL and nginx will be built
+# Set where OpenSSL and NGINX will be built
 BPATH=$(pwd)/build
 
 # Make a "today" variable for use in back-up filenames later
@@ -53,7 +53,7 @@ apt-get update && apt-get -y install \
   dirmngr \
   libssl-dev
 
-# Download the source files
+# Download the source files and verify their checksums
 curl -L "${SOURCE_PCRE}${VERSION_PCRE}.tar.gz" -o "${BPATH}/PCRE.tar.gz" && \
   echo "${SHA256_PCRE} ${BPATH}/PCRE.tar.gz" | sha256sum -c -
 curl -L "${SOURCE_ZLIB}${VERSION_ZLIB}.tar.gz" -o "${BPATH}/ZLIB.tar.gz" && \
@@ -69,7 +69,7 @@ curl -L "${SOURCE_ZLIB}${VERSION_ZLIB}.tar.gz.asc" -o "${BPATH}/ZLIB.tar.gz.asc"
 curl -L "${SOURCE_OPENSSL}${VERSION_OPENSSL}.tar.gz.asc" -o "${BPATH}/OPENSSL.tar.gz.asc"
 curl -L "${SOURCE_NGINX}${VERSION_NGINX}.tar.gz.asc" -o "${BPATH}/NGINX.tar.gz.asc"
 
-# Verify OpenPGP signature of downloads
+# Verify OpenPGP signature of the source files
 cd "$BPATH"
 GNUPGHOME="$(mktemp -d)"
 export GNUPGHOME
@@ -84,7 +84,7 @@ for archive in *.tar.gz; do
   tar xzf "$archive"
 done
 
-# Clean up
+# Clean up source files
 rm -rf \
   "$GNUPGHOME" \
   ./*.tar.*
@@ -105,7 +105,7 @@ if [ ! -d "/var/cache/nginx/" ]; then
     /var/cache/nginx/scgi_temp
 fi
 
-# Add nginx group and user if they do not already exist
+# Add NGINX group and user if they do not already exist
 id -g nginx &>/dev/null || addgroup --system nginx
 id -u nginx &>/dev/null || adduser --disabled-password --system --home /var/cache/nginx --shell /sbin/nologin --group nginx
 
@@ -117,7 +117,7 @@ else
   ECFLAG=""
 fi
 
-# Build nginx, with various modules included/excluded
+# Build NGINX, with various modules included/excluded
 cd "$BPATH/$VERSION_NGINX"
 ./configure \
   --prefix=/etc/nginx \
@@ -170,7 +170,7 @@ make clean
 strip -s /usr/sbin/nginx*
 
 if [ -d "/etc/nginx-${today}" ]; then
-  # Rename the compiled 'default' /etc/nginx directory so its accessible as a reference to the new nginx defaults
+  # Rename the default /etc/nginx settings directory so it's accessible as a reference to the new NGINX defaults
   mv /etc/nginx /etc/nginx-default
 
   # Restore the previous version of /etc/nginx to /etc/nginx so the old settings are kept
