@@ -113,9 +113,9 @@ id -u nginx &>/dev/null || adduser --disabled-password --system --home /var/cach
 # Test to see if our version of gcc supports __SIZEOF_INT128__
 if gcc -dM -E - </dev/null | grep -q __SIZEOF_INT128__
 then
-ECFLAG="enable-ec_nistp_64_gcc_128"
+  ECFLAG="enable-ec_nistp_64_gcc_128"
 else
-ECFLAG=""
+  ECFLAG=""
 fi
 
 # Build nginx, with various modules included/excluded
