@@ -40,8 +40,9 @@ BPATH=$(pwd)/build
 today=$(date +"%Y-%m-%d")
 
 # Clean out any files from previous runs of this script
-rm -rf $BPATH
-rm -rf /etc/nginx-default
+rm -rf \
+  "$BPATH" \
+  /etc/nginx-default
 mkdir $BPATH
 
 # Ensure the required software to compile nginx is installed
