@@ -99,7 +99,7 @@ fi
 
 # Create NGINX cache directories if they do not already exist
 if [ ! -d "/var/cache/nginx/" ]; then
-    mkdir -p \
+  mkdir -p \
     /var/cache/nginx/client_temp \
     /var/cache/nginx/proxy_temp \
     /var/cache/nginx/fastcgi_temp \
