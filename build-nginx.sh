@@ -88,7 +88,6 @@ done
 rm -rf \
   "$GNUPGHOME" \
   ./*.tar.*
-cd ../
 
 # Rename the existing /etc/nginx directory so it's saved as a back-up
 if [ -d "/etc/nginx" ]; then
