@@ -1,46 +1,51 @@
 #!/usr/bin/env bash
 # Run as root or with sudo
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run as root or with sudo."
+  exit 1
+fi
 
 # Make script exit if a simple command fails and
 # Make script print commands being executed
 set -e -x
 
 # Set names of latest versions of each package
-export VERSION_PCRE=pcre-8.42
-export VERSION_ZLIB=zlib-1.2.11
-export VERSION_OPENSSL=openssl-1.1.0i
-export VERSION_NGINX=nginx-1.15.2
+version_pcre=pcre-8.42
+version_zlib=zlib-1.2.11
+version_openssl=openssl-1.1.0i
+version_nginx=nginx-1.15.2
 
 # Set checksums of latest versions
-export SHA256_PCRE=69acbc2fbdefb955d42a4c606dfde800c2885711d2979e356c0636efde9ec3b5
-export SHA256_ZLIB=c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1
-export SHA256_OPENSSL=ebbfc844a8c8cc0ea5dc10b86c9ce97f401837f3fa08c17b2cdadc118253cf99
-export SHA256_NGINX=eeba09aecfbe8277ac33a5a2486ec2d6731739f3c1c701b42a0c3784af67ad90
+sha256_pcre=69acbc2fbdefb955d42a4c606dfde800c2885711d2979e356c0636efde9ec3b5
+sha256_zlib=c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1
+sha256_openssl=ebbfc844a8c8cc0ea5dc10b86c9ce97f401837f3fa08c17b2cdadc118253cf99
+sha256_nginx=eeba09aecfbe8277ac33a5a2486ec2d6731739f3c1c701b42a0c3784af67ad90
 
 # Set OpenPGP keys used to sign downloads
-export OPGP_PCRE=45F68D54BBE23FB3039B46E59766E084FB0F43D8
-export OPGP_ZLIB=5ED46A6721D365587791E2AA783FCD8E58BCAFBA
-export OPGP_OPENSSL=8657ABB260F056B1E5190839D9C4D26D0E604491
-export OPGP_NGINX=B0F4253373F8F6F510D42178520A9993A1C052F8
+opgp_pcre=45F68D54BBE23FB3039B46E59766E084FB0F43D8
+opgp_zlib=5ED46A6721D365587791E2AA783FCD8E58BCAFBA
+opgp_openssl=8657ABB260F056B1E5190839D9C4D26D0E604491
+opgp_nginx=B0F4253373F8F6F510D42178520A9993A1C052F8
 
 # Set URLs to the source directories
-export SOURCE_OPENSSL=https://www.openssl.org/source/
-export SOURCE_PCRE=https://ftp.pcre.org/pub/pcre/
-export SOURCE_ZLIB=https://zlib.net/
-export SOURCE_NGINX=https://nginx.org/download/
+source_pcre=https://ftp.pcre.org/pub/pcre/
+source_zlib=https://zlib.net/
+source_openssl=https://www.openssl.org/source/
+source_nginx=https://nginx.org/download/
 
-# Set where OpenSSL and nginx will be built
-export BPATH=$(pwd)/build
+# Set where OpenSSL and NGINX will be built
+bpath=$(pwd)/build
 
-# Make a 'today' variable for use in back-up filenames later
+# Make a "today" variable for use in back-up filenames later
 today=$(date +"%Y-%m-%d")
 
 # Clean out any files from previous runs of this script
-rm -rf $BPATH
-rm -rf /etc/nginx-default
-mkdir $BPATH
+rm -rf \
+  "$bpath" \
+  /etc/nginx-default
+mkdir "$bpath"
 
-# Ensure the required software to compile nginx is installed
+# Ensure the required software to compile NGINX is installed
 apt-get update && apt-get -y install \
   binutils \
   build-essential \
@@ -48,54 +53,51 @@ apt-get update && apt-get -y install \
   dirmngr \
   libssl-dev
 
-# Download the source files
-curl -L $SOURCE_PCRE$VERSION_PCRE.tar.gz -o $BPATH/PCRE.tar.gz && \
-  echo "${SHA256_PCRE} ${BPATH}/PCRE.tar.gz" | sha256sum -c -
-curl -L $SOURCE_ZLIB$VERSION_ZLIB.tar.gz -o $BPATH/ZLIB.tar.gz && \
-  echo "${SHA256_ZLIB} ${BPATH}/ZLIB.tar.gz" | sha256sum -c -
-curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz -o $BPATH/OPENSSL.tar.gz && \
-  echo "${SHA256_OPENSSL} ${BPATH}/OPENSSL.tar.gz" | sha256sum -c -
-curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz -o $BPATH/NGINX.tar.gz && \
-  echo "${SHA256_NGINX} ${BPATH}/NGINX.tar.gz" | sha256sum -c -
+# Download the source files and verify their checksums
+curl -L "${source_pcre}${version_pcre}.tar.gz" -o "${bpath}/pcre.tar.gz" && \
+  echo "${sha256_pcre} ${bpath}/pcre.tar.gz" | sha256sum -c -
+curl -L "${source_zlib}${version_zlib}.tar.gz" -o "${bpath}/zlib.tar.gz" && \
+  echo "${sha256_zlib} ${bpath}/zlib.tar.gz" | sha256sum -c -
+curl -L "${source_openssl}${version_openssl}.tar.gz" -o "${bpath}/openssl.tar.gz" && \
+  echo "${sha256_openssl} ${bpath}/openssl.tar.gz" | sha256sum -c -
+curl -L "${source_nginx}${version_nginx}.tar.gz" -o "${bpath}/nginx.tar.gz" && \
+  echo "${sha256_nginx} ${bpath}/nginx.tar.gz" | sha256sum -c -
 
 # Download the signature files
-curl -L $SOURCE_PCRE$VERSION_PCRE.tar.gz.sig -o $BPATH/PCRE.tar.gz.sig
-curl -L $SOURCE_ZLIB$VERSION_ZLIB.tar.gz.asc -o $BPATH/ZLIB.tar.gz.asc
-curl -L $SOURCE_OPENSSL$VERSION_OPENSSL.tar.gz.asc -o $BPATH/OPENSSL.tar.gz.asc
-curl -L $SOURCE_NGINX$VERSION_NGINX.tar.gz.asc -o $BPATH/NGINX.tar.gz.asc
+curl -L "${source_pcre}${version_pcre}.tar.gz.sig" -o "${bpath}/pcre.tar.gz.sig"
+curl -L "${source_zlib}${version_zlib}.tar.gz.asc" -o "${bpath}/zlib.tar.gz.asc"
+curl -L "${source_openssl}${version_openssl}.tar.gz.asc" -o "${bpath}/openssl.tar.gz.asc"
+curl -L "${source_nginx}${version_nginx}.tar.gz.asc" -o "${bpath}/nginx.tar.gz.asc"
 
-# Verify OpenPGP signature of downloads
-cd $BPATH
-export GNUPGHOME="$(mktemp -d)"
-gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$OPGP_PCRE" "$OPGP_ZLIB" "$OPGP_OPENSSL" "$OPGP_NGINX"
-gpg --batch --verify PCRE.tar.gz.sig PCRE.tar.gz
-gpg --batch --verify ZLIB.tar.gz.asc ZLIB.tar.gz
-gpg --batch --verify OPENSSL.tar.gz.asc OPENSSL.tar.gz
-gpg --batch --verify NGINX.tar.gz.asc NGINX.tar.gz
+# Verify OpenPGP signature of the source files
+cd "$bpath"
+GNUPGHOME="$(mktemp -d)"
+export GNUPGHOME
+gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$opgp_pcre" "$opgp_zlib" "$opgp_openssl" "$opgp_nginx"
+gpg --batch --verify pcre.tar.gz.sig pcre.tar.gz
+gpg --batch --verify zlib.tar.gz.asc zlib.tar.gz
+gpg --batch --verify openssl.tar.gz.asc openssl.tar.gz
+gpg --batch --verify nginx.tar.gz.asc nginx.tar.gz
 
 # Expand the source files
-tar xzf PCRE.tar.gz
-tar xzf ZLIB.tar.gz
-tar xzf OPENSSL.tar.gz
-tar xzf NGINX.tar.gz
+cd "$bpath"
+for archive in ./*.tar.gz; do
+  tar xzf "$archive"
+done
 
-# Clean up
-rm -r \
+# Clean up source files
+rm -rf \
   "$GNUPGHOME" \
-  PCRE.tar.* \
-  ZLIB.tar.* \
-  OPENSSL.tar.* \
-  NGINX.tar.*
-cd ../
+  "$bpath"/*.tar.*
 
 # Rename the existing /etc/nginx directory so it's saved as a back-up
 if [ -d "/etc/nginx" ]; then
-  mv /etc/nginx /etc/nginx-$today
+  mv /etc/nginx "/etc/nginx-${today}"
 fi
 
 # Create NGINX cache directories if they do not already exist
 if [ ! -d "/var/cache/nginx/" ]; then
-    mkdir -p \
+  mkdir -p \
     /var/cache/nginx/client_temp \
     /var/cache/nginx/proxy_temp \
     /var/cache/nginx/fastcgi_temp \
@@ -103,84 +105,84 @@ if [ ! -d "/var/cache/nginx/" ]; then
     /var/cache/nginx/scgi_temp
 fi
 
-# Add nginx group and user if they do not already exist
+# Add NGINX group and user if they do not already exist
 id -g nginx &>/dev/null || addgroup --system nginx
 id -u nginx &>/dev/null || adduser --disabled-password --system --home /var/cache/nginx --shell /sbin/nologin --group nginx
 
 # Test to see if our version of gcc supports __SIZEOF_INT128__
 if gcc -dM -E - </dev/null | grep -q __SIZEOF_INT128__
 then
-ECFLAG="enable-ec_nistp_64_gcc_128"
+  ecflag="enable-ec_nistp_64_gcc_128"
 else
-ECFLAG=""
+  ecflag=""
 fi
 
-# Build nginx, with various modules included/excluded
-cd $BPATH/$VERSION_NGINX
+# Build NGINX, with various modules included/excluded
+cd "$bpath/$version_nginx"
 ./configure \
---prefix=/etc/nginx \
---with-cc-opt='-O3 -fPIE -fstack-protector-strong -Wformat -Werror=format-security' \
---with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro' \
---with-pcre=$BPATH/$VERSION_PCRE \
---with-zlib=$BPATH/$VERSION_ZLIB \
---with-openssl-opt="no-weak-ssl-ciphers no-ssl3 no-shared $ECFLAG -DOPENSSL_NO_HEARTBEATS -fstack-protector-strong" \
---with-openssl=$BPATH/$VERSION_OPENSSL \
---sbin-path=/usr/sbin/nginx \
---modules-path=/usr/lib/nginx/modules \
---conf-path=/etc/nginx/nginx.conf \
---error-log-path=/var/log/nginx/error.log \
---http-log-path=/var/log/nginx/access.log \
---pid-path=/var/run/nginx.pid \
---lock-path=/var/run/nginx.lock \
---http-client-body-temp-path=/var/cache/nginx/client_temp \
---http-proxy-temp-path=/var/cache/nginx/proxy_temp \
---http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp \
---http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp \
---http-scgi-temp-path=/var/cache/nginx/scgi_temp \
---user=nginx \
---group=nginx \
---with-file-aio \
---with-http_auth_request_module \
---with-http_gunzip_module \
---with-http_gzip_static_module \
---with-http_mp4_module \
---with-http_realip_module \
---with-http_secure_link_module \
---with-http_slice_module \
---with-http_ssl_module \
---with-http_stub_status_module \
---with-http_sub_module \
---with-http_v2_module \
---with-pcre-jit \
---with-stream \
---with-stream_ssl_module \
---with-threads \
---without-http_empty_gif_module \
---without-http_geo_module \
---without-http_split_clients_module \
---without-http_ssi_module \
---without-mail_imap_module \
---without-mail_pop3_module \
---without-mail_smtp_module
+  --prefix=/etc/nginx \
+  --with-cc-opt="-O3 -fPIE -fstack-protector-strong -Wformat -Werror=format-security" \
+  --with-ld-opt="-Wl,-Bsymbolic-functions -Wl,-z,relro" \
+  --with-pcre="$bpath/$version_pcre" \
+  --with-zlib="$bpath/$version_zlib" \
+  --with-openssl-opt="no-weak-ssl-ciphers no-ssl3 no-shared $ecflag -DOPENSSL_NO_HEARTBEATS -fstack-protector-strong" \
+  --with-openssl="$bpath/$version_openssl" \
+  --sbin-path=/usr/sbin/nginx \
+  --modules-path=/usr/lib/nginx/modules \
+  --conf-path=/etc/nginx/nginx.conf \
+  --error-log-path=/var/log/nginx/error.log \
+  --http-log-path=/var/log/nginx/access.log \
+  --pid-path=/var/run/nginx.pid \
+  --lock-path=/var/run/nginx.lock \
+  --http-client-body-temp-path=/var/cache/nginx/client_temp \
+  --http-proxy-temp-path=/var/cache/nginx/proxy_temp \
+  --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp \
+  --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp \
+  --http-scgi-temp-path=/var/cache/nginx/scgi_temp \
+  --user=nginx \
+  --group=nginx \
+  --with-file-aio \
+  --with-http_auth_request_module \
+  --with-http_gunzip_module \
+  --with-http_gzip_static_module \
+  --with-http_mp4_module \
+  --with-http_realip_module \
+  --with-http_secure_link_module \
+  --with-http_slice_module \
+  --with-http_ssl_module \
+  --with-http_stub_status_module \
+  --with-http_sub_module \
+  --with-http_v2_module \
+  --with-pcre-jit \
+  --with-stream \
+  --with-stream_ssl_module \
+  --with-threads \
+  --without-http_empty_gif_module \
+  --without-http_geo_module \
+  --without-http_split_clients_module \
+  --without-http_ssi_module \
+  --without-mail_imap_module \
+  --without-mail_pop3_module \
+  --without-mail_smtp_module
 make
 make install
 make clean
 strip -s /usr/sbin/nginx*
 
-if [ -d "/etc/nginx-$today" ]; then
-  # Rename the compiled 'default' /etc/nginx directory so its accessible as a reference to the new nginx defaults
+if [ -d "/etc/nginx-${today}" ]; then
+  # Rename the default /etc/nginx settings directory so it's accessible as a reference to the new NGINX defaults
   mv /etc/nginx /etc/nginx-default
 
   # Restore the previous version of /etc/nginx to /etc/nginx so the old settings are kept
-  mv /etc/nginx-$today /etc/nginx
+  mv "/etc/nginx-${today}" /etc/nginx
 fi
 
 # Create NGINX systemd service file if it does not already exist
 if [ ! -e "/lib/systemd/system/nginx.service" ]; then
-  # Control will enter here if $DIRECTORY doesn't exist.
-  FILE="/lib/systemd/system/nginx.service"
+  # Control will enter here if the NGINX service doesn't exist.
+  file="/lib/systemd/system/nginx.service"
 
-  /bin/cat >$FILE <<'EOF'
+  /bin/cat >$file <<'EOF'
 [Unit]
 Description=The NGINX HTTP and reverse proxy server
 After=syslog.target network.target remote-fs.target nss-lookup.target
