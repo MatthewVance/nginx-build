@@ -13,13 +13,13 @@ set -e -x
 version_pcre=pcre-8.42
 version_zlib=zlib-1.2.11
 version_openssl=openssl-1.1.0i
-version_nginx=nginx-1.15.2
+version_nginx=nginx-1.15.3
 
 # Set checksums of latest versions
 sha256_pcre=69acbc2fbdefb955d42a4c606dfde800c2885711d2979e356c0636efde9ec3b5
 sha256_zlib=c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1
 sha256_openssl=ebbfc844a8c8cc0ea5dc10b86c9ce97f401837f3fa08c17b2cdadc118253cf99
-sha256_nginx=eeba09aecfbe8277ac33a5a2486ec2d6731739f3c1c701b42a0c3784af67ad90
+sha256_nginx=9391fb91c3e2ebd040a4e3ac2b2f0893deb6232edc30a8e16fcc9c3fa9d6be85
 
 # Set OpenPGP keys used to sign downloads
 opgp_pcre=45F68D54BBE23FB3039B46E59766E084FB0F43D8
@@ -73,7 +73,8 @@ curl -L "${source_nginx}${version_nginx}.tar.gz.asc" -o "${bpath}/nginx.tar.gz.a
 cd "$bpath"
 GNUPGHOME="$(mktemp -d)"
 export GNUPGHOME
-gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$opgp_pcre" "$opgp_zlib" "$opgp_openssl" "$opgp_nginx"
+( gpg --keyserver ipv4.pool.sks-keyservers.net --recv-keys "$opgp_pcre" "$opgp_zlib" "$opgp_openssl" "$opgp_nginx" \
+|| gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$opgp_pcre" "$opgp_zlib" "$opgp_openssl" "$opgp_nginx")
 gpg --batch --verify pcre.tar.gz.sig pcre.tar.gz
 gpg --batch --verify zlib.tar.gz.asc zlib.tar.gz
 gpg --batch --verify openssl.tar.gz.asc openssl.tar.gz
