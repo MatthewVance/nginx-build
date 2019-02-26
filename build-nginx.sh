@@ -12,13 +12,13 @@ set -e -x
 # Set names of latest versions of each package
 version_pcre=pcre-8.42
 version_zlib=zlib-1.2.11
-version_openssl=openssl-1.1.1a
+version_openssl=openssl-1.1.1b
 version_nginx=nginx-1.15.8
 
 # Set checksums of latest versions
 sha256_pcre=69acbc2fbdefb955d42a4c606dfde800c2885711d2979e356c0636efde9ec3b5
 sha256_zlib=c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1
-sha256_openssl=fc20130f8b7cbd2fb918b2f14e2f429e109c31ddd0fb38fc5d71d9ffed3f9f41
+sha256_openssl=5c557b023230413dfb0756f3137a13e6d726838ccd1430888ad15bfb2b43ea4b
 sha256_nginx=a8bdafbca87eb99813ae4fcac1ad0875bf725ce19eb265d28268c309b2b40787
 
 # Set OpenPGP keys used to sign downloads
