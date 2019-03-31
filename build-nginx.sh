@@ -15,12 +15,6 @@ version_zlib=zlib-1.2.11
 version_openssl=openssl-1.1.1b
 version_nginx=nginx-1.15.10
 
-# Set checksums of latest versions
-sha256_pcre=69acbc2fbdefb955d42a4c606dfde800c2885711d2979e356c0636efde9ec3b5
-sha256_zlib=c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1
-sha256_openssl=5c557b023230413dfb0756f3137a13e6d726838ccd1430888ad15bfb2b43ea4b
-sha256_nginx=b865743abd52bce4745d0f7e7fedde3cafbaaab617b022c105e3e4e456537c3c
-
 # Set OpenPGP keys used to sign downloads
 opgp_pcre=45F68D54BBE23FB3039B46E59766E084FB0F43D8
 opgp_zlib=5ED46A6721D365587791E2AA783FCD8E58BCAFBA
@@ -53,15 +47,11 @@ apt-get update && apt-get -y install \
   dirmngr \
   libssl-dev
 
-# Download the source files and verify their checksums
-curl -L "${source_pcre}${version_pcre}.tar.gz" -o "${bpath}/pcre.tar.gz" && \
-  echo "${sha256_pcre} ${bpath}/pcre.tar.gz" | sha256sum -c -
-curl -L "${source_zlib}${version_zlib}.tar.gz" -o "${bpath}/zlib.tar.gz" && \
-  echo "${sha256_zlib} ${bpath}/zlib.tar.gz" | sha256sum -c -
-curl -L "${source_openssl}${version_openssl}.tar.gz" -o "${bpath}/openssl.tar.gz" && \
-  echo "${sha256_openssl} ${bpath}/openssl.tar.gz" | sha256sum -c -
-curl -L "${source_nginx}${version_nginx}.tar.gz" -o "${bpath}/nginx.tar.gz" && \
-  echo "${sha256_nginx} ${bpath}/nginx.tar.gz" | sha256sum -c -
+# Download the source files
+curl -L "${source_pcre}${version_pcre}.tar.gz" -o "${bpath}/pcre.tar.gz"
+curl -L "${source_zlib}${version_zlib}.tar.gz" -o "${bpath}/zlib.tar.gz"
+curl -L "${source_openssl}${version_openssl}.tar.gz" -o "${bpath}/openssl.tar.gz"
+curl -L "${source_nginx}${version_nginx}.tar.gz" -o "${bpath}/nginx.tar.gz"
 
 # Download the signature files
 curl -L "${source_pcre}${version_pcre}.tar.gz.sig" -o "${bpath}/pcre.tar.gz.sig"
@@ -69,7 +59,7 @@ curl -L "${source_zlib}${version_zlib}.tar.gz.asc" -o "${bpath}/zlib.tar.gz.asc"
 curl -L "${source_openssl}${version_openssl}.tar.gz.asc" -o "${bpath}/openssl.tar.gz.asc"
 curl -L "${source_nginx}${version_nginx}.tar.gz.asc" -o "${bpath}/nginx.tar.gz.asc"
 
-# Verify OpenPGP signature of the source files
+# Verify the integrity and authenticity of the source files through their OpenPGP signature
 cd "$bpath"
 GNUPGHOME="$(mktemp -d)"
 export GNUPGHOME
