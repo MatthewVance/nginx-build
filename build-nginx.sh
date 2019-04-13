@@ -10,10 +10,10 @@ fi
 set -e -x
 
 # Set names of latest versions of each package
-version_pcre=pcre-8.42
+version_pcre=pcre-8.43
 version_zlib=zlib-1.2.11
 version_openssl=openssl-1.1.1b
-version_nginx=nginx-1.15.10
+version_nginx=nginx-1.15.11
 
 # Set OpenPGP keys used to sign downloads
 opgp_pcre=45F68D54BBE23FB3039B46E59766E084FB0F43D8
