@@ -9,11 +9,18 @@ fi
 # Make script print commands being executed
 set -e -x
 
+# Get the names of the most recent tarballs
+# openssl is set to the v1.1.1 series
+pcre_tgz=$(curl -sL https://ftp.pcre.org/pub/pcre/ | grep -E -o 'pcre\-[0-9.]+\.tar[.a-z]*gz' | tail -n 1)
+zlib_tgz=$(curl -sL https://zlib.net/ | grep -E -o 'zlib-.*.tar[.a-z]*gz' | head -n 1)
+openssl_tgz=$(curl -sL https://www.openssl.org/source/ | grep -E -o 'openssl-1.1.1[a-z.]*gz' | head -n 1)
+nginx_tgz=$(curl -sL https://nginx.org/en/download.html | grep -E -o 'nginx\-[0-9.]+\.tar[.a-z]*gz' | head -n 1)
+
 # Set names of latest versions of each package
-version_pcre=pcre-8.43
-version_zlib=zlib-1.2.11
-version_openssl=openssl-1.1.1b
-version_nginx=nginx-1.15.12
+version_pcre=${pcre_tgz/.tar.gz/}
+version_zlib=${zlib_tgz/.tar.gz/}
+version_openssl=${openssl_tgz/.tar.gz/}
+version_nginx=${nginx_tgz/.tar.gz/}
 
 # Set OpenPGP keys used to sign downloads
 opgp_pcre=45F68D54BBE23FB3039B46E59766E084FB0F43D8
