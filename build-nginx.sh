@@ -9,18 +9,17 @@ fi
 # Make script print commands being executed
 set -e -x
 
-# Get the names of the most recent tarballs
-# openssl is set to the v1.1.1 series
-pcre_tgz=$(curl -sL https://ftp.pcre.org/pub/pcre/ | grep -E -o 'pcre\-[0-9.]+\.tar[.a-z]*gz' | tail -n 1)
-zlib_tgz=$(curl -sL https://zlib.net/ | grep -E -o 'zlib-.*.tar[.a-z]*gz' | head -n 1)
-openssl_tgz=$(curl -sL https://www.openssl.org/source/ | grep -E -o 'openssl-1.1.1[a-z.]*gz' | head -n 1)
-nginx_tgz=$(curl -sL https://nginx.org/en/download.html | grep -E -o 'nginx\-[0-9.]+\.tar[.a-z]*gz' | head -n 1)
+# Set URLs to the source directories
+source_pcre=https://ftp.pcre.org/pub/pcre/
+source_zlib=https://zlib.net/
+source_openssl=https://www.openssl.org/source/
+source_nginx=https://nginx.org/download/
 
-# Set names of latest versions of each package
-version_pcre=${pcre_tgz/.tar.gz/}
-version_zlib=${zlib_tgz/.tar.gz/}
-version_openssl=${openssl_tgz/.tar.gz/}
-version_nginx=${nginx_tgz/.tar.gz/}
+# Look up latest versions of each package
+version_pcre=$(curl -sL ${source_pcre} | grep -Eo 'pcre\-[0-9.]+[0-9]' | sort -V | tail -n 1)
+version_zlib=$(curl -sL ${source_zlib} | grep -Eo 'zlib\-[0-9.]+[0-9]' | sort -V | tail -n 1)
+version_openssl=$(curl -sL ${source_openssl} | grep -Eo 'openssl\-[0-9.]+[a-z]?' | sort -V | tail -n 1)
+version_nginx=$(curl -sL ${source_nginx} | grep -Eo 'nginx\-[0-9.]+[13579]\.[0-9]{1,2}' | sort -V | tail -n 1)
 
 # Set OpenPGP keys used to sign downloads
 opgp_pcre=45F68D54BBE23FB3039B46E59766E084FB0F43D8
