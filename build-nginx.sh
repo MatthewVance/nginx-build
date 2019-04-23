@@ -27,12 +27,6 @@ opgp_zlib=5ED46A6721D365587791E2AA783FCD8E58BCAFBA
 opgp_openssl=8657ABB260F056B1E5190839D9C4D26D0E604491
 opgp_nginx=B0F4253373F8F6F510D42178520A9993A1C052F8
 
-# Set URLs to the source directories
-source_pcre=https://ftp.pcre.org/pub/pcre/
-source_zlib=https://zlib.net/
-source_openssl=https://www.openssl.org/source/
-source_nginx=https://nginx.org/download/
-
 # Set where OpenSSL and NGINX will be built
 bpath=$(pwd)/build
 
