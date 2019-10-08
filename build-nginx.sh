@@ -9,6 +9,9 @@ fi
 # Make script print commands being executed
 set -e -x
 
+# Ensure curl is installed
+apt-get update && apt-get install curl -y
+
 # Set URLs to the source directories
 source_pcre=https://ftp.pcre.org/pub/pcre/
 source_zlib=https://zlib.net/
@@ -40,7 +43,7 @@ rm -rf \
 mkdir "$bpath"
 
 # Ensure the required software to compile NGINX is installed
-apt-get update && apt-get -y install \
+apt-get -y install \
   binutils \
   build-essential \
   curl \
