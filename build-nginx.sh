@@ -21,7 +21,7 @@ source_nginx=https://nginx.org/download/
 # Look up latest versions of each package
 version_pcre=$(curl -sL ${source_pcre} | grep -Eo 'pcre\-[0-9.]+[0-9]' | sort -V | tail -n 1)
 version_zlib=$(curl -sL ${source_zlib} | grep -Eo 'zlib\-[0-9.]+[0-9]' | sort -V | tail -n 1)
-version_openssl=$(curl -sL ${source_openssl} | grep -Eo 'openssl\-[0-9]+\.[0-9]+\.[0-9]+[a-z]?(?=\.tar\.gz)' | sort -V | tail -n 1)
+version_openssl=$(curl -sL ${source_openssl} | grep -Po 'openssl\-[0-9]+\.[0-9]+\.[0-9]+[a-z]?(?=\.tar\.gz)' | sort -V | tail -n 1)
 version_nginx=$(curl -sL ${source_nginx} | grep -Eo 'nginx\-[0-9.]+[13579]\.[0-9]+' | sort -V | tail -n 1)
 
 # Set OpenPGP keys used to sign downloads
